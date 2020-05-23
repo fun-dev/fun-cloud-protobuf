@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "directory/rpc";
+package rpc;
+
+import "google/api/annotations.proto";
+
+service DirectoryService {
+    rpc List(ListDirectoryRequest) returns (ListDirectoryResponse) {
+        option (google.api.http) = { 
+            get: "/v1/directory/ls/{directory_path}" 
+        };
+    }
+}
+
+message ObjectInfo {
+    string kind       = 1;
+    string file_path  = 2;
+}
+// --- /v1/directory/ls/{directory_path} ---
+message ListDirectoryRequest {
+    string directory_path = 1;
+}
+message ListDirectoryResponse {
+    ObjectInfo target_item    = 1;
+    repeated ObjectInfo items = 2;
+}

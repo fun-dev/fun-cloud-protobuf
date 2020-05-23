@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option go_package = "auth/rpc";
+package rpc;
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+service AuthService {
+    rpc GetUserInfo(google.protobuf.Empty) returns (GetUserInfoResponse) {
+        option (google.api.http) = { 
+            get: "/v1/auth/userinfo" 
+        };
+    }
+    rpc SignIn(SignInRequest) returns (SignInResponse) {
+        option (google.api.http) = { 
+            post: "/v1/auth/singin" 
+            body: "*"
+        };
+    }
+    rpc SignOut(google.protobuf.Empty) returns (google.protobuf.Empty) {
+        option (google.api.http) = { 
+            post: "/v1/auth/signout" 
+            body: "*"
+        };
+    }
+    rpc SignUp(SignUpRequest) returns (SignUpResponse) {
+        option (google.api.http) = { 
+            post: "/v1/auth/signup" 
+            body: "*"
+        };
+    }
+}
+enum AuthType {
+    BASIC        = 0;
+    GOOGLE_OAUTH = 1;
+}
+
+// --- /v1/auth/userinfo ---
+message GetUserInfoResponse {
+    string icon_url              = 1;
+    string id                    = 2;
+    string name                  = 3;
+    string main_email            = 4;
+    repeated string other_emails = 5;
+}
+// --- /v1/auth/singin ---
+message SignInRequest {
+    string provider_token = 1;
+}
+message SignInResponse {
+    string token = 1;
+}
+// --- /v1/auth/signup ---
+message SignUpRequest {
+    AuthType auth_type    = 1;
+    // basic
+    string user_id        = 2;
+    string user_password  = 3;
+    // OAuth
+    string provider_token = 4;
+}
+message SignUpResponse {
+    string token = 1;
+}

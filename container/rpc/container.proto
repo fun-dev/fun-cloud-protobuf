@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+option go_package = "container/rpc";
+package rpc;
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+service ContainerService {
+    rpc Create(CreateContainerRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { 
+            post: "/v1/containers" 
+            body: "*"
+        };
+    }
+    rpc List(ListContainerRequest) returns (ListContainerResponse) {
+        option (google.api.http) = { 
+            get: "/v1/containers"
+        };
+    }
+    //rpc UpdateContainer(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc Delete(DeleteContainerRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { 
+            delete: "/v1/containers"
+        };
+    }
+}
+// --- Common Object --- //
+enum ContainerCondition {
+    TRUE    = 0;
+    FALSE   = 1;
+    UNKNOWN = 2;
+}
+
+message Container {
+    string id                     = 1;
+    string image_name             = 2;
+    string url                    = 3;
+    ContainerCondition condition  = 4;
+}
+// --- /v1/containers ---
+message CreateContainerRequest {
+    string container_image_name = 1;
+}
+// --- "/v1/containers ---
+message ListContainerRequest {
+    string container_id = 1;
+}
+message ListContainerResponse {
+    repeated Container containers = 1;
+}
+// --- /v1/containers ---
+message DeleteContainerRequest {
+    string container_id = 1;
+}

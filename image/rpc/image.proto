@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option go_package = "image/rpc";
+package rpc;
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+service ContainerImageService {
+    rpc Create(google.protobuf.Empty) returns (CreateContainerImageResponse) {
+        option (google.api.http) = { 
+            post: "/v1/container_images" 
+            body: "*"
+        };
+    }
+    rpc List(google.protobuf.Empty) returns (ListContainerImageResponse) {
+        option (google.api.http) = { 
+            get: "/v1/container_images"
+        };
+    }
+    //rpc UpdateContainer(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc Delete(DeleteContainerImageRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { 
+            delete: "/v1/container_images"
+        };
+    }
+}
+
+enum ContainerImageType {
+    OFFICIAL     = 0;
+    FUN_OFFICIAL = 1;
+    CUSTOM       = 2;
+}
+message ContainerImage {
+    string id                     = 1;
+    string name                   = 2;
+    string description            = 3;
+    ContainerImageType image_type = 4; 
+}
+// POST
+message CreateContainerImageResponse {
+    string redirect_url = 1;
+}
+// GET
+message ListContainerImageResponse {
+    repeated ContainerImage container_images = 1;
+}
+// DELETE
+message DeleteContainerImageRequest {
+    string container_image_name = 1;
+}
