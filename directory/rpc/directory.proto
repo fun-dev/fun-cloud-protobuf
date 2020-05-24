@@ -13,15 +13,22 @@ service DirectoryService {
     }
 }
 
+enum DataType {
+    FILE      = 0;
+    DIRECTORY = 1;
+}
+
 message ObjectInfo {
-    string kind       = 1;
-    string file_path  = 2;
+    DataType data_type              = 1;
+    string data_path                = 2;
+    string data_name                = 3;
+    repeated ObjectInfo child_items = 4;
 }
 // --- /v1/directory/ls/{directory_path} ---
 message ListDirectoryRequest {
-    string directory_path = 1;
+    string container_id   = 1;
+    string directory_path = 2;
 }
 message ListDirectoryResponse {
-    ObjectInfo target_item    = 1;
-    repeated ObjectInfo items = 2;
+    ObjectInfo object_info = 1;
 }

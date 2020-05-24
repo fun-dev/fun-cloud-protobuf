@@ -34,6 +34,12 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "container_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -55,28 +61,39 @@
         }
       }
     },
+    "rpcDataType": {
+      "type": "string",
+      "enum": [
+        "FILE",
+        "DIRECTORY"
+      ],
+      "default": "FILE"
+    },
     "rpcListDirectoryResponse": {
       "type": "object",
       "properties": {
-        "target_item": {
+        "object_info": {
           "$ref": "#/definitions/rpcObjectInfo"
-        },
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/rpcObjectInfo"
-          }
         }
       }
     },
     "rpcObjectInfo": {
       "type": "object",
       "properties": {
-        "kind": {
+        "data_type": {
+          "$ref": "#/definitions/rpcDataType"
+        },
+        "data_path": {
           "type": "string"
         },
-        "file_path": {
+        "data_name": {
           "type": "string"
+        },
+        "child_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/rpcObjectInfo"
+          }
         }
       }
     },
