@@ -178,8 +178,19 @@
     "rpcSignInRequest": {
       "type": "object",
       "properties": {
-        "provider_token": {
+        "auth_type": {
+          "$ref": "#/definitions/rpcAuthType"
+        },
+        "user_id": {
+          "type": "string",
+          "title": "basic"
+        },
+        "user_password": {
           "type": "string"
+        },
+        "provider_token": {
+          "type": "string",
+          "title": "OAuth"
         }
       },
       "title": "--- /v1/auth/singin ---"

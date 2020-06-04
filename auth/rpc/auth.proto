@@ -46,8 +46,14 @@ message GetUserInfoResponse {
 }
 // --- /v1/auth/singin ---
 message SignInRequest {
-    string provider_token = 1;
+    AuthType auth_type    = 1;
+    // basic
+    string user_id        = 2;
+    string user_password  = 3;
+    // OAuth
+    string provider_token = 4;
 }
+
 message SignInResponse {
     string token = 1;
 }
@@ -60,6 +66,7 @@ message SignUpRequest {
     // OAuth
     string provider_token = 4;
 }
+
 message SignUpResponse {
     string token = 1;
 }
